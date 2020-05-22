@@ -1,0 +1,18 @@
+{
+  "name": "homework1",
+  "version": "1.0.0",
+  "description": "Homework 1",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha --require esm src/__tests__/**/*.js"
+  },
+  "author": "Bryan Moncada",
+  "license": "MIT",
+  "dependencies": {
+    "esm": "^3.2.25",
+    "node-fetch": "^2.6.0"
+  },
+  "devDependencies": {
+    "mocha": "^7.1.2"
+  }
+}
