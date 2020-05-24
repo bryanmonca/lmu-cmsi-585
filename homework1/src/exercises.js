@@ -34,6 +34,18 @@ export function scramble(stringToScramble) {
     return stringScrambled;
 }
 
+export function powers(base, limit, callback) {
+    if (limit <= 0) {
+        return;
+    }
+
+    let value = 1;
+    while (value <= limit) {
+        callback(value);
+        value *= base;
+    }
+}
+
 export function* powersGenerator(base, limit) {
     let value = 1;
     while (value <= limit) {
@@ -56,4 +68,48 @@ export function say(currentString) {
             }
         }
     }
+}
+
+export function interleave(array, ...otherParams) {
+    const arrayOtherParams = [...otherParams];
+    const interleavedArray = [];
+    const lengthDifference = array.length - arrayOtherParams.length;
+    if (lengthDifference < 0) {
+        let i;
+        for (i = 0; i < array.length; i++) {
+            interleavedArray.push(array[i], arrayOtherParams[i]);
+        }
+        for (i; i < arrayOtherParams.length; i++) {
+            interleavedArray.push(arrayOtherParams[i]);
+        }
+    } else if (lengthDifference > 0) {
+        let i;
+        for (i = 0; i < arrayOtherParams.length; i++) {
+            interleavedArray.push(array[i], arrayOtherParams[i]);
+        }
+        for (i; i < array.length; i++) {
+            interleavedArray.push(array[i]);
+        }
+    } else {
+        for (let i = 0; i < array.length; i++) {
+            interleavedArray.push(array[i], arrayOtherParams[i]);
+        }
+    }
+
+    return interleavedArray;
+}
+
+export function makeCryptoFunctions(key, algorithm, vector) {
+    const crypto = require('crypto');
+    const encrypt = (data) => {
+        const cipher = crypto.createCipheriv(algorithm, key, vector);
+        const encrypted = cipher.update(data, 'utf8', 'hex') + cipher.final('hex');
+        return encrypted;
+    };
+    const decrypt = (data) => {
+        const decipher = crypto.createDecipheriv(algorithm, key, vector);
+        const decrypted = decipher.update(data, 'hex', 'utf8') + decipher.final('utf8');
+        return decrypted;
+    };
+    return [encrypt, decrypt];
 }

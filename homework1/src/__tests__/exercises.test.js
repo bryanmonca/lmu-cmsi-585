@@ -5,10 +5,10 @@ import {
     stretched,
     scramble,
     say,
-    //powers,
-    //interleave,
+    powers,
+    interleave,
     powersGenerator,
-    //makeCryptoFunctions,
+    makeCryptoFunctions,
     //pokemonSprites,
 } from '../exercises';
 
