@@ -1,7 +1,3 @@
-import { resolve } from 'dns';
-import { rejects } from 'assert';
-import { freemem } from 'os';
-
 /**
  * Accepts a number of U.S cents and returns an array containing
  * the smallest number of quarters, dimes, nickels and pennies.
