@@ -9,7 +9,7 @@ import {
     interleave,
     powersGenerator,
     makeCryptoFunctions,
-    //pokemonSprites,
+    pokemonSprites,
 } from '../exercises';
 
 describe('change', () => {

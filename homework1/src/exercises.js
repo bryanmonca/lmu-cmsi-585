@@ -1,3 +1,7 @@
+import { resolve } from 'dns';
+import { rejects } from 'assert';
+import { freemem } from 'os';
+
 /**
  * Accepts a number of U.S cents and returns an array containing
  * the smallest number of quarters, dimes, nickels and pennies.
@@ -162,4 +166,22 @@ export function makeCryptoFunctions(key, algorithm, vector) {
         return decrypted;
     };
     return [encrypt, decrypt];
+}
+
+/**
+ * Returns a promise that resolves to all of the sprites for a 
+ * given Pokemon of the PokeAPI.
+ * @param {string} pokemonName name of the Pokemon
+ * @returns {promise} resolves to a JS object with the sprite
+ * data from the API call
+ */
+export function pokemonSprites(pokemonName) {
+    const fetch = require('node-fetch');
+    const pokemon = "https://pokeapi.co/api/v2/pokemon/" + pokemonName;
+    return fetch(pokemon)  // return this promise
+        .then(response => response.json())
+        .then(pokeSprites => pokeSprites.sprites)
+        .catch(() => {
+            throw new Error('Unknown Pokemon. ');
+        });
 }
