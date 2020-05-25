@@ -118,27 +118,18 @@ export function say(currentString) {
 export function interleave(array, ...otherParams) {
     const arrayOtherParams = [...otherParams];
     const interleavedArray = [];
+    const minLength = Math.min(array.length, arrayOtherParams.length)
+
+    for (let i = 0; i < minLength; i++) {
+        interleavedArray.push(array[i], arrayOtherParams[i]);
+    }
+
     const lengthDifference = array.length - arrayOtherParams.length;
     if (lengthDifference < 0) {
-        let i;
-        for (i = 0; i < array.length; i++) {
-            interleavedArray.push(array[i], arrayOtherParams[i]);
-        }
-        for (i; i < arrayOtherParams.length; i++) {
-            interleavedArray.push(arrayOtherParams[i]);
-        }
-    } else if (lengthDifference > 0) {
-        let i;
-        for (i = 0; i < arrayOtherParams.length; i++) {
-            interleavedArray.push(array[i], arrayOtherParams[i]);
-        }
-        for (i; i < array.length; i++) {
-            interleavedArray.push(array[i]);
-        }
-    } else {
-        for (let i = 0; i < array.length; i++) {
-            interleavedArray.push(array[i], arrayOtherParams[i]);
-        }
+        interleavedArray.push(...arrayOtherParams.slice(minLength, arrayOtherParams.length));
+    }
+    else if (lengthDifference > 0) {
+        interleavedArray.push(...array.slice(minLength, array.length));
     }
 
     return interleavedArray;
