@@ -1,8 +1,8 @@
 /**
  * Accepts a number of U.S cents and returns an array containing
  * the smallest number of quarters, dimes, nickels and pennies.
- * @param {number} amount the amount to be converted to coins
- * @returns {array} array containing the respective number
+ * @param amount the amount to be converted to coins
+ * @returns array containing the respective number
  * of quarters, dimes, nickels and pennies.
  */
 export function change(amount) {
@@ -23,8 +23,8 @@ export function change(amount) {
  * Accepts a string and returns a new string equal to the initial
  * string with all whitespace removed and ith character repeated
  * i times.
- * @param {string} stringToStretch String to be transformed
- * @returns {string} stretched string
+ * @param stringToStretch String to be transformed
+ * @returns stretched string
  */
 export function stretched(stringToStretch) {
     const stringNoSpace = stringToStretch.replace(/\s/g, '');
@@ -38,8 +38,8 @@ export function stretched(stringToStretch) {
 /**
  * Randomly permutes a string. All possible permutations are
  * equally likely.
- * @param {string} stringToScramble string to be transformed
- * @returns {string} string scrambled 
+ * @param stringToScramble string to be transformed
+ * @returns string scrambled 
  */
 export function scramble(stringToScramble) {
     const arrayString = Array.from(stringToScramble);
@@ -57,9 +57,9 @@ export function scramble(stringToScramble) {
 /**
  * Yields successive powers of a base from 1 up to some limit.
  * It consumes the values with a callback.
- * @param {number} base power will be obtained from this number
- * @param {number} limit maximum power of a base
- * @param {function} callback asynchronous function
+ * @param base power will be obtained from this number
+ * @param limit maximum power of a base
+ * @param callback asynchronous function
  */
 export function powers(base, limit, callback) {
     if (limit <= 0) {
@@ -76,8 +76,8 @@ export function powers(base, limit, callback) {
 /**
  * Generator function that yields successive powers of a base
  * from 1 up to some limit
- * @param {number} base power will be obtained from this number
- * @param {number} limit maximum power of a base
+ * @param base power will be obtained from this number
+ * @param limit maximum power of a base
  */
 export function* powersGenerator(base, limit) {
     let value = 1;
@@ -111,9 +111,9 @@ export function say(currentString) {
 /**
  * Interleaves an array with other values. Extra elements should 
  * end up at the end of the result.
- * @param {array} array to be interleaved
- * @param  {...any} otherParams values to be interleaved with array
- * @returns {array} interleaved array
+ * @param array to be interleaved
+ * @param otherParams values to be interleaved with array
+ * @returns interleaved array
  */
 export function interleave(array, ...otherParams) {
     const arrayOtherParams = [...otherParams];
@@ -158,8 +158,8 @@ export function makeCryptoFunctions(key, algorithm, vector) {
 /**
  * Returns a promise that resolves to all of the sprites for a 
  * given Pokemon of the PokeAPI.
- * @param {string} pokemonName name of the Pokemon
- * @returns {promise} resolves to a JS object with the sprite
+ * @param pokemonName name of the Pokemon
+ * @returns promise resolves to a JS object with the sprite
  * data from the API call
  */
 export function pokemonSprites(pokemonName) {
