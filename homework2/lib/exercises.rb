@@ -1,3 +1,6 @@
+# Accepts a number of U.S. cents and returns an array containing,
+# the smallest number of U.S. quarters, dimes, nickels, and pennies
+# that equal the given amount.
 def change(amount)
     raise RangeError, "amount cannot be negative" if amount < 0
     results = []
@@ -9,6 +12,9 @@ def change(amount)
     results
 end
 
+# Method added to the String class that returns a new string equal 
+# to the receiver with all whitespace removed and then with the
+# i-th character repeated i times
 class String
     def stretched
         self.gsub!(/\s/, '')
@@ -18,6 +24,9 @@ class String
     end
 end
 
+# Randomly permutes a string. Each time the function is called 
+# for a given argument, all possible permutations are equally likely. 
+# Implementation based on Fisher-Yates shuffle.
 def scramble(string)
     (string.length-1).downto(1).each do |x|
         randomInt = rand(x + 1)
@@ -26,6 +35,9 @@ def scramble(string)
     string
 end
 
+# Method that yields successive powers of a base starting at 1
+# and going up to some limit. Implementation based on my
+# homework 1.
 def powers(base, limit)
     value = 1
     while value <= limit
@@ -34,6 +46,8 @@ def powers(base, limit)
     end
 end
 
+# Ruby fiber that yields successive powers of a base starting at 1
+# and going up to some limit.
 def powers_generator(base, limit)
     value = 1
     f = Fiber.new do
@@ -44,6 +58,11 @@ def powers_generator(base, limit)
     end
 end
 
+# A “chainable” lambda that accepts one string per call, but when
+# called without arguments, returns the words previously passed
+# in order and separated by a single space.
+# In order to call function without arguments, a default parameter 
+# is provided.
 def say
     lambda {
         |string = nil|
@@ -56,6 +75,10 @@ def say
     }
 end
 
+# A method that interleaves an array with a bunch of values.
+# If the array length is not the same as the number of values to 
+# interleave, the “extra” elements should end up at the end of the 
+# result. Implementation based on Dr.Toal's homework 1 solution.
 class Array
     def interleave(*values)
         first_length = self.length
@@ -70,6 +93,9 @@ class Array
     end
 end 
 
+# Method returns the sprites for a given Pokemon the Poké API. 
+# The sole argument of the function is the name of the Pokemon.
+# An exception is raised when response is not successful.
 def pokemon_sprites(pokemon)
     require 'net/http'
     require 'json'
