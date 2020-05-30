@@ -1,174 +1,132 @@
+import crypto from 'crypto';
+import fetch from 'node-fetch';
+
 /**
- * Accepts a number of U.S cents and returns an array containing
- * the smallest number of quarters, dimes, nickels and pennies.
- * @param amount the amount to be converted to coins
- * @returns array containing the respective number
- * of quarters, dimes, nickels and pennies.
+ * Accepts a number of U.S. cents and returns an array containing,
+ * the smallest number of U.S. quarters, dimes, nickels, and pennies
  */
 export function change(amount) {
-    if (amount < 0) {
-        throw new RangeError('amount cannot be negative');
-    }
-    let resultArray = [0, 0, 0, 0];
-    const coins = [25, 10, 5, 1];
-    let currentAmount = amount;
-    for (let i = 0; i < resultArray.length; i++) {
-        resultArray[i] = Math.trunc(currentAmount / coins[i]);
-        currentAmount = currentAmount % coins[i];
-    }
-    return resultArray;
+  if (amount < 0) {
+    throw new RangeError('amount cannot be negative');
+  }
+  let results = [0, 0, 0, 0];
+  const coins = [25, 10, 5, 1];
+  for (let i = 0; i < results.length; i++) {
+    results[i] = Math.floor(amount / coins[i]);
+    amount = amount % coins[i];
+  }
+  return results;
 }
 
 /**
- * Accepts a string and returns a new string equal to the initial
- * string with all whitespace removed and ith character repeated
- * i times.
- * @param stringToStretch String to be transformed
- * @returns stretched string
+ * Returns a new string equal to the receiver with the
+ * i-th character repeated i times
  */
-export function stretched(stringToStretch) {
-    const stringNoSpace = stringToStretch.replace(/\s/g, '');
-    let stretchedString = "";
-    for (let i = 0; i < stringNoSpace.length; i++) {
-        stretchedString += stringNoSpace[i].repeat(i + 1);
-    }
-    return stretchedString;
+export function stretched(string) {
+  const withoutSpaces = string.replace(/\s/g, '');
+  let stretchedString = "";
+  for (let i = 0; i < withoutSpaces.length; i++) {
+    stretchedString += withoutSpaces[i].repeat(i + 1);
+  }
+  return stretchedString;
 }
 
 /**
  * Randomly permutes a string. All possible permutations are
- * equally likely.
- * @param stringToScramble string to be transformed
- * @returns string scrambled 
+ * equally likely. Implementation based on Fisher-Yates shuffle.
  */
-export function scramble(stringToScramble) {
-    const arrayString = Array.from(stringToScramble);
-    let randomInt, temp;
-    for (let i = arrayString.length - 1; i > 0; i--) {
-        randomInt = Math.floor(Math.random() * (i + 1));    // random int [0, i]
-        temp = arrayString[randomInt];
-        arrayString[randomInt] = arrayString[i];
-        arrayString[i] = temp;
-    }
-    const stringScrambled = arrayString.join('');
-    return stringScrambled;
+export function scramble(string) {
+  const stringArray = string.split('');
+  let randomIndex;
+  for (let i = stringArray.length - 1; i > 0; i--) {
+    randomIndex = Math.floor(Math.random() * (i + 1));
+    [stringArray[randomIndex], stringArray[i]] = [stringArray[i], stringArray[randomIndex]]
+  }
+  return stringArray.join('');
 }
 
 /**
- * Yields successive powers of a base from 1 up to some limit.
- * It consumes the values with a callback.
- * @param base power will be obtained from this number
- * @param limit maximum power of a base
- * @param callback asynchronous function
+ * Function that yields successive powers of a base from 1 up to some 
+ * limit. It consumes the values with a callback.
  */
 export function powers(base, limit, callback) {
-    if (limit <= 0) {
-        return;
-    }
-
-    let value = 1;
-    while (value <= limit) {
-        callback(value);
-        value *= base;
-    }
+  let value = 1;
+  while (value <= limit) {
+    callback(value);
+    value *= base;
+  }
 }
 
 /**
  * Generator function that yields successive powers of a base
  * from 1 up to some limit
- * @param base power will be obtained from this number
- * @param limit maximum power of a base
  */
 export function* powersGenerator(base, limit) {
-    let value = 1;
-    while (value <= limit) {
-        yield value;
-        value *= base;
-    }
+  let value = 1;
+  while (value <= limit) {
+    yield value;
+    value *= base;
+  }
 }
 
 /**
- * "Chainable" function that accepts one string per call.
- * When called without arguments, returns the words previously
- * passed, in order, separated by a single space.
+ * A "Chainable" function that accepts one string per call, when called 
+ * without arguments, returns the strings previously passed.
  */
-export function say(currentString) {
-    if (currentString === undefined) {
-        return '';
-    }
-    else {
-        return function (nextString) {
-            if (nextString === undefined) {
-                return currentString;
-            }
-            else {
-                return say(`${currentString} ${nextString}`);
-            }
-        }
-    }
+export function say(string) {
+  if (string === undefined) { return ''; }
+  return function (nextString) {
+    if (nextString === undefined) { return string; }
+    return say(`${string} ${nextString}`);
+  }
 }
 
 /**
- * Interleaves an array with other values. Extra elements should 
- * end up at the end of the result.
- * @param array to be interleaved
- * @param otherParams values to be interleaved with array
- * @returns interleaved array
+ * Interleaves an array with a group of values. If the array length 
+ * and the number of values are not the same, the extra elements go 
+ * at the end of the result.
  */
-export function interleave(array, ...otherParams) {
-    const arrayOtherParams = [...otherParams];
-    const interleavedArray = [];
-    const minLength = Math.min(array.length, arrayOtherParams.length)
-
-    for (let i = 0; i < minLength; i++) {
-        interleavedArray.push(array[i], arrayOtherParams[i]);
-    }
-
-    const lengthDifference = array.length - arrayOtherParams.length;
-    if (lengthDifference < 0) {
-        interleavedArray.push(...arrayOtherParams.slice(minLength, arrayOtherParams.length));
-    }
-    else if (lengthDifference > 0) {
-        interleavedArray.push(...array.slice(minLength, array.length));
-    }
-
-    return interleavedArray;
+export function interleave(array, ...values) {
+  const arrayLength = array.length;
+  const valuesLength = values.length;
+  const maxLength = Math.max(arrayLength, valuesLength);
+  const results = [];
+  for (let i = 0; i < maxLength; i++) {
+    if (i < arrayLength) { results.push(array[i]); }
+    if (i < valuesLength) { results.push(values[i]); }
+  }
+  return results;
 }
 
 /**
- * Encrypts and decrypts messages. Returns two functions in
- * an array. The first one is an encrypt function, the second one
- * a decrypt function.
+ * Encrypts and decrypts messages from UTF-8 encoding to hex or 
+ * viceversa. Both functions are returned in an array.
  */
 export function makeCryptoFunctions(key, algorithm, vector) {
-    const crypto = require('crypto');
-    const encrypt = (data) => {
-        const cipher = crypto.createCipheriv(algorithm, key, vector);
-        const encrypted = cipher.update(data, 'utf8', 'hex') + cipher.final('hex');
-        return encrypted;
-    };
-    const decrypt = (data) => {
-        const decipher = crypto.createDecipheriv(algorithm, key, vector);
-        const decrypted = decipher.update(data, 'hex', 'utf8') + decipher.final('utf8');
-        return decrypted;
-    };
-    return [encrypt, decrypt];
+  const encrypt = (data) => {
+    const cipher = crypto.createCipheriv(algorithm, key, vector);
+    const encrypted = cipher.update(data, 'utf8', 'hex') + cipher.final('hex');
+    return encrypted;
+  };
+  const decrypt = (data) => {
+    const decipher = crypto.createDecipheriv(algorithm, key, vector);
+    const decrypted = decipher.update(data, 'hex', 'utf8') + decipher.final('utf8');
+    return decrypted;
+  };
+  return [encrypt, decrypt];
 }
 
 /**
  * Returns a promise that resolves to all of the sprites for a 
- * given Pokemon of the PokeAPI.
- * @param pokemonName name of the Pokemon
- * @returns promise resolves to a JS object with the sprite
- * data from the API call
+ * given Pokemon of the PokeAPI. An exception is raised when 
+ * response is not successful.
  */
 export function pokemonSprites(pokemonName) {
-    const fetch = require('node-fetch');
-    const pokemon = "https://pokeapi.co/api/v2/pokemon/" + pokemonName;
-    return fetch(pokemon)  // return this promise
-        .then(response => response.json())
-        .then(pokeSprites => pokeSprites.sprites)
-        .catch(() => {
-            throw new Error('Unknown Pokemon. ');
-        });
+  const baseURL = "https://pokeapi.co/api/v2/pokemon/"
+  return fetch(baseURL + encodeURI(pokemonName))
+    .then(response => response.json())
+    .then(pokeSprites => pokeSprites.sprites)
+    .catch(() => {
+      throw new Error('Unknown Pokemon. ');
+    });
 }
