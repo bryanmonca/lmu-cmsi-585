@@ -40,9 +40,9 @@ func ExamplePowers() {
 }
 
 func ExampleCylinder() {
-        c := Cylinder{3.0, 5.0}
-        fmt.Printf("%9.5f\n", c.SurfaceArea())
-        fmt.Printf("%9.5f\n", c.Volume())
-        // Output: 150.79645
-        // 141.37167
+	c := Cylinder{radius: 3.0, height: 5.0}
+	fmt.Printf("%9.5f\n", c.SurfaceArea())
+	fmt.Printf("%9.5f\n", c.Volume())
+	// Output: 150.79645
+	// 141.37167
 }
