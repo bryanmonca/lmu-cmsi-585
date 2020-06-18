@@ -8,31 +8,30 @@ change(Amount) when Amount < 0 ->
     {false, "amount cannot be negative"};
 change(Amount) ->
     Coins = [25, 10, 5, 1],
-    Results = loop(Coins, Amount),
+    Results = getCoins(Coins, Amount, []),
     {true, Results}.
 
 %% Helper function for change(). Iterates through Coins and returns
 %% the smallest number of quarters, dimes, nickels and pennies given
 %% an Amount.
-loop(L, Amount) -> loop(L, Amount, []).
-loop([], _, Acum) -> Acum;
-loop([H|T], Amount, Acum) ->
-    loop(T, Amount rem H, Acum ++ [Amount div H]).
+getCoins([], _, Acum) -> Acum;
+getCoins([H|T], Amount, Acum) ->
+    getCoins(T, Amount rem H, Acum ++ [Amount div H]).
 
 
 %% Given a List, the function returns the sum of cubes of odds.
 sumOfCubesOfOdds(List) ->
-    Odd_cubes = [X*X*X || X <- List, X rem 2 =/= 0],
-    lists:sum(Odd_cubes).
+    lists:sum([X*X*X || X <- List, X rem 2 =/= 0]).
+
 
 %% Function that sends successive powers of a base starting at 1
 %% up to some limit to a Pid.
 powers(Base, Limit, Pid) ->
-    (fun Loop(Acum) ->
+    (fun SendPowers(Acum) ->
         if
             Acum =< Limit ->
                 Pid ! Acum,
-                Loop(Acum * Base);
+                SendPowers(Acum * Base);
             true -> 
                 ok
         end
