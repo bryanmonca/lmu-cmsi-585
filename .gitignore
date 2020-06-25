@@ -3,6 +3,7 @@
 
 # package directories
 node_modules
+target
 
 # erlang
 *.beam
