@@ -1,19 +1,54 @@
-// If you do a little research on how to use crates, there is a a nice one
-// called num_integer, which has a cool div_rem function in it, that makes
-// the change function awesome. If you use it, your first line in the file
-// will be:
-//
-// use num_integer::div_rem;
+use std::f64::consts::PI;
 
+// Accepts a number of U.S. cents and returns a type Result with an
+// array for success containing the smallest number of U.S. quarters, 
+// dimes, nickels and pennies, and an error message for failure.
 pub fn change(amount: i64) -> Result<[i64;4], &'static str> {
-    // Implement the change function here
+    if amount < 0 {
+        return Err("amount cannot be negative")
+    } else {
+        let mut amount = amount;
+        let mut results: [i64; 4] = [0, 0, 0, 0];
+        let coins = [25, 10, 5, 1];
+        for i in 0..results.len() {
+            results[i] = amount / coins[i];
+            amount = amount % coins[i];
+        }
+        Ok(results)
+    }
 }
 
+
+// Function that returns in a vector successive powers of a base from 1 
+// up to some limit.
 pub fn powers(base: u64, limit: u64) -> Vec<u64> {
-    // Implement powers here
+    let mut value: u64 = 1;
+    let mut results: Vec<u64> = Vec::new();
+    while value <= limit {
+        results.push(value);
+        value *= base;
+    }
+    results
 }
 
-// Implement your cylinder type here (struct and impl)
+
+pub struct Cylinder {
+    radius: f64,
+    height: f64,
+}
+
+impl Cylinder {
+    // Method defined on Cylinder, returns the total surface area.
+    pub fn surface_area(&self) -> f64 {
+        (2.0 * PI * self.radius * self.height) + (2.0 * PI * self.radius.powi(2))
+    }
+
+    // Method defined on Cylinder, returns the volume.
+    pub fn volume(&self) -> f64 {
+        PI * self.radius.powi(2) * self.height
+    }
+}
+
 
 #[cfg(test)]
 mod tests {
