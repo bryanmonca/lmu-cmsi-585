@@ -14,7 +14,7 @@ func sum(row []int, evens, odds chan int) {
 	}
 }
 
-// Function that returns the sum of the rows in with even length and 
+// Function that returns the sum of the rows with even length and 
 // the sum of the rows with odd length. It uses a goroutine for each 
 // row sending the sum to two different channels depending on the 
 // length of each row.
